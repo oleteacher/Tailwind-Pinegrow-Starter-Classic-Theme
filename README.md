@@ -5,8 +5,12 @@ Hey folks! Just wanted to share a classic WordPress theme I’ve been working on
 What’s different from the original course?
 	•	Instead of vanilla CSS, I rebuilt the whole theme using Tailwind CSS (v4) and UI blocks from Tailwind UI.
 	•	Skipped the contact form implementation — for most projects, Contact Form 7 or any free form plugin will integrate better and faster.
-	•	CPTs and taxonomies were created directly using functions.php and ChatGPT (faster for me than Pinegrow in this case).
+	•	CPTs and taxonomies were created directly using functions.php and ChatGPT (faster for me than Pinegrow in this case)* see code
 	•	Custom blocks and layouts are done with Pinegrow’s WordPress features + Tailwind utility classes.
+	•	The search form title is different to that of Adamn tutorial. I just injected the php:  <h2 class="text-3xl font-bold mb-8">
+    Search Results for: <span class="text-red-600"><?php echo esc_html( get_search_query() ); ?></span></h2>
+
+ 
 
 Included Templates:
 	•	404.html – includes a working search module
@@ -33,3 +37,47 @@ Would love feedback or improvements from the community — happy to share the re
 Cheers!
 
 * feel free to to download and use as you please. 
+* /* CPT and Taxonomy */
+
+function create_employee_post_type() {
+    register_post_type('employee',
+        array(
+            'labels' => array(
+                'name' => __('Employees'),
+                'singular_name' => __('Employee'),
+                // ... other labels ...
+            ),
+            'public' => true,
+            'has_archive' => true,
+            'rewrite' => array('slug' => 'employees'),
+            'supports' => array('title', 'editor', 'custom-fields', 'thumbnail'), // ✅ Add 'thumbnail' here
+            'show_in_rest' => true,
+        )
+    );
+}
+
+function create_department_taxonomy() {
+    register_taxonomy('department', 'employee', array(
+        'labels' => array(
+            'name' => __('Departments'),
+            'singular_name' => __('Department'),
+            'search_items' => __('Search Departments'),
+            'all_items' => __('All Departments'),
+            'parent_item' => __('Parent Department'),
+            'parent_item_colon' => __('Parent Department:'),
+            'edit_item' => __('Edit Department'),
+            'update_item' => __('Update Department'),
+            'add_new_item' => __('Add New Department'),
+            'new_item_name' => __('New Department Name'),
+            'menu_name' => __('Departments'),
+        ),
+        'hierarchical' => true,
+        'rewrite' => array('slug' => 'department'),
+        'show_in_rest' => true,
+    ));
+}
+
+add_action('init', 'create_employee_post_type');
+add_action('init', 'create_department_taxonomy');
+
+/* End CPT and Taxonomy */
