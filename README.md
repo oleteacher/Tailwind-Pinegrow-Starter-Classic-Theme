@@ -39,6 +39,7 @@ Cheers!
 * feel free to to download and use as you please. 
 * /* CPT and Taxonomy */
 
+<code>
 function create_employee_post_type() {
     register_post_type('employee',
         array(
@@ -55,7 +56,8 @@ function create_employee_post_type() {
         )
     );
 }
-
+</code>
+<code>
 function create_department_taxonomy() {
     register_taxonomy('department', 'employee', array(
         'labels' => array(
@@ -81,3 +83,4 @@ add_action('init', 'create_employee_post_type');
 add_action('init', 'create_department_taxonomy');
 
 /* End CPT and Taxonomy */
+</code>
